@@ -13,7 +13,7 @@ function buildCountryChart(restList){
       }
     ];
     let b2Layout = {
-      title: "Number of times in top 50"
+      title: "Number of times in top 50s"
     };
     // Render the Bar Chart #2
     Plotly.newPlot("bar2",b2Data,b2Layout);
@@ -71,7 +71,7 @@ function buildRegionChart(counList){
     let b1Layout = {
       title: "Counts of top Restaurants in Region",
       xaxis:{
-        title:{text:'Count of Restaurants'}
+        title:{text:'Count of Top 50s'}
       }
     };
     // Render the Bar Chart #1 
