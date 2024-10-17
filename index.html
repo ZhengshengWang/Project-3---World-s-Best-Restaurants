@@ -50,8 +50,10 @@
         <div class="row">
           <div class="col-md-3">
             <div class="card card-body bg-light">
-              <h6>Country:</h6>
+              <h6>Region:</h6>
               <select id="selDataset" onchange="optionChanged(this.value)"></select>
+              <h6>Country:</h6>
+              <select id="selDataset2" onchange="optionChanged2(this.value)"></select>
             </div>
           </div>
           <div class="col-md-9" style="height: 500px;">
@@ -60,11 +62,9 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <h3>Temp Bar1:</h3>
                 <div id="bar1"></div>
             </div>
             <div class="col-md-6">
-                <h3>Temp Bar2:</h3>
                 <div id="bar2"></div>
             </div>
         </div>
@@ -77,6 +77,9 @@
             
         
 </body>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="./kyleSelect.js"></script>
 <script>
     
     
