@@ -28,12 +28,19 @@ function buildCharts(country) {
 
     // Filter the list for the object with the desired Region
     let selection = list.filter((item)=>item.country === country);
+    let ii = 0;
+    let restLat = 0;
+    let restLng = 0;
     let restList = [];
     for (let i = 0; i<selection.length; i++){
+      ii++;
+      restLat = restLat + selection[i].lat;
+      restLng = restLng + selection[i].lng;
       if (!restList.includes(selection[i].country)){
         restList.push(selection[i].restaurant);
       }
     };
+    map_06c7c6fd049b8c568e0b30a5a6e021b2.setView([restLat/ii,restLng/ii],10);
     //console.log(country);
     //console.log(restList);
     buildCountryChart(restList);
