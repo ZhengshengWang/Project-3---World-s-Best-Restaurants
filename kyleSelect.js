@@ -13,14 +13,16 @@ function buildCountryChart(restList){
       }
     ];
     let b2Layout = {
-      title: "Number of times in top 50s"
-
+      title: "Number of times in top 50s",
+      xaxis: {
+        type: 'category'
+      }
     };
-    console.log(restCount);
-    console.log(typeof(restCount[1]));
-    console.log("min " + Math.min(...restCount));
-    console.log("max " + Math.max(...restCount));
-    console.log(b2Data);
+    //console.log(restCount);
+    //console.log(typeof(restCount[1]));
+    //console.log("min " + Math.min(...restCount));
+    //console.log("max " + Math.max(...restCount));
+    //console.log(b2Data);
 
     // Render the Bar Chart #2
     Plotly.newPlot("bar2",b2Data,b2Layout);
@@ -76,9 +78,9 @@ function buildRegionChart(counList){
       }
     ];
     let b1Layout = {
-      title: "Counts of top Restaurants in Region",
+      title: "Counts of Top 50s for Restaurants in Region",
       xaxis:{
-        title:{text:'Count of Top 50s'}
+        title:{text:'Number of Awards'}
       }
     };
     // Render the Bar Chart #1 
