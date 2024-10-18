@@ -108,7 +108,7 @@ function buildSubFilt(region){
     }
     //init subfilt selection
     buildRegionChart(counList);
-    let sel = counList[1]
+    let sel = counList[0]
     buildCharts(sel);
   });
   
