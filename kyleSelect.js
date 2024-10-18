@@ -14,7 +14,14 @@ function buildCountryChart(restList){
     ];
     let b2Layout = {
       title: "Number of times in top 50s"
+
     };
+    console.log(restCount);
+    console.log(typeof(restCount[1]));
+    console.log("min " + Math.min(...restCount));
+    console.log("max " + Math.max(...restCount));
+    console.log(b2Data);
+
     // Render the Bar Chart #2
     Plotly.newPlot("bar2",b2Data,b2Layout);
   })
@@ -36,11 +43,11 @@ function buildCharts(country) {
       ii++;
       restLat = restLat + selection[i].lat;
       restLng = restLng + selection[i].lng;
-      if (!restList.includes(selection[i].country)){
+      if (!restList.includes(selection[i].restaurant)){
         restList.push(selection[i].restaurant);
       }
     };
-    map_06c7c6fd049b8c568e0b30a5a6e021b2.setView([restLat/ii,restLng/ii],10);
+    map_06c7c6fd049b8c568e0b30a5a6e021b2.setView([restLat/ii,restLng/ii],5);
     //console.log(country);
     //console.log(restList);
     buildCountryChart(restList);
@@ -101,7 +108,7 @@ function buildSubFilt(region){
     }
     //init subfilt selection
     buildRegionChart(counList);
-    let sel = counList[0]
+    let sel = counList[1]
     buildCharts(sel);
   });
   
