@@ -1,3 +1,9 @@
+function zoomToRest(rest){
+  d3.json("https://raw.githubusercontent.com/ZhengshengWang/Project-3---World-s-Best-Restaurants/refs/heads/main/Resource/csvjson.json").then((data)=>{
+    let restObj = data.filter((item)=>item.restaurant === rest);
+    map_06c7c6fd049b8c568e0b30a5a6e021b2.setView([restObj[0].lat,restObj[0].lng],15);
+  });
+};
 function buildCountryChart(restList){
   d3.json("https://raw.githubusercontent.com/ZhengshengWang/Project-3---World-s-Best-Restaurants/refs/heads/main/Resource/restRepeatRank.json").then((data)=>{
     let restCount = [];
@@ -9,11 +15,14 @@ function buildCountryChart(restList){
       {
         type: 'bar',
         x: restList,
-        y: restCount
+        y: restCount,
+        hovertemplate: `<i>%{x}</i>` +
+                       `<br><b>Number of Top 50s: </b> %{y}<extra></extra>`
       }
     ];
     let b2Layout = {
       title: "Number of times in top 50s",
+      hovermode: 'closest',
       xaxis: {
         type: 'category'
       }
@@ -26,6 +35,10 @@ function buildCountryChart(restList){
 
     // Render the Bar Chart #2
     Plotly.newPlot("bar2",b2Data,b2Layout);
+    let bar2 = document.getElementById('bar2');
+    bar2.on('plotly_click',function(data){
+      zoomToRest(data.points[0].x);
+    });
   })
 }
 // function to build charts
@@ -68,23 +81,30 @@ function buildRegionChart(counList){
       let counObj = data.filter((item)=>item.country === counList[i]);
       counCount.push(counObj[0].count);
     }
- 
+  
     let b1Data = [
       {
         type: 'bar',
         y: counList,
         x: counCount,
-        orientation: 'h'
+        orientation: 'h',
+        hovertemplate: `<i>%{y}</i>` +
+                `<br><b>Number of Top 50s: </b> %{x}<extra></extra>`
       }
     ];
     let b1Layout = {
       title: "Counts of Top 50s for Restaurants in Region",
+      hovermode: 'closest',
       xaxis:{
         title:{text:'Number of Awards'}
       }
     };
     // Render the Bar Chart #1 
     Plotly.newPlot("bar1",b1Data,b1Layout);
+    let bar1 = document.getElementById('bar1');
+    bar1.on('plotly_click', function(data){
+      buildCharts(data.points[0].y);
+    });
   });
 }
 
@@ -119,7 +139,7 @@ function buildSubFilt(region){
 function init() {
     let dataSelect = d3.select("#selDataset");
     //init regional option
-    let region = ['Africa','Asia','Australia','Europe','North America','South America']
+    let region = ['North America','Africa','Asia','Australia','Europe','South America']
     for (let i = 0; i<region.length; i++){
       dataSelect.append("option").text(region[i]);
     }
@@ -139,3 +159,7 @@ function optionChanged2(newCountry){
 
 // Initialize the dashboard
 init();
+
+
+
+
