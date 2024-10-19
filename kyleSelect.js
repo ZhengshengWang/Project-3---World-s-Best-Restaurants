@@ -1,10 +1,8 @@
-function zoomToRest(rest){
-  d3.json("https://raw.githubusercontent.com/ZhengshengWang/Project-3---World-s-Best-Restaurants/refs/heads/main/Resource/csvjson.json").then((data)=>{
-    let restObj = data.filter((item)=>item.restaurant === rest);
-    map_06c7c6fd049b8c568e0b30a5a6e021b2.setView([restObj[0].lat,restObj[0].lng],15);
-  });
+function zoomTo(lat,lng,zoom){
+  //set map view to ([lat,lng],zoom Level)
+  map_06c7c6fd049b8c568e0b30a5a6e021b2.setView([lat,lng],zoom);
 };
-function buildCountryChart(restList){
+function buildCountryChart(restList,lat,lng){
   d3.json("https://raw.githubusercontent.com/ZhengshengWang/Project-3---World-s-Best-Restaurants/refs/heads/main/Resource/restRepeatRank.json").then((data)=>{
     let restCount = [];
     for (let i = 0; i<restList.length; i++){
@@ -21,23 +19,24 @@ function buildCountryChart(restList){
       }
     ];
     let b2Layout = {
-      title: "Number of times in top 50s",
+      title: {
+        text: "Number of times in top 50s",
+        automargin: true
+      },
       hovermode: 'closest',
       xaxis: {
-        type: 'category'
+        type: 'category',
+        automargin: true
       }
     };
-    //console.log(restCount);
-    //console.log(typeof(restCount[1]));
-    //console.log("min " + Math.min(...restCount));
-    //console.log("max " + Math.max(...restCount));
-    //console.log(b2Data);
 
     // Render the Bar Chart #2
     Plotly.newPlot("bar2",b2Data,b2Layout);
+    // bar2 chart even set up
     let bar2 = document.getElementById('bar2');
     bar2.on('plotly_click',function(data){
-      zoomToRest(data.points[0].x);
+      //zoom to [lat,lng] by the index value.
+      zoomTo(lat[restList.indexOf(data.points[0].x)],lng[restList.indexOf(data.points[0].x)],15)
     });
   })
 }
@@ -50,25 +49,26 @@ function buildCharts(country) {
 
     // Filter the list for the object with the desired Region
     let selection = list.filter((item)=>item.country === country);
-    let ii = 0;
+    //for calculation
     let restLat = 0;
     let restLng = 0;
+    //saving data to variable
     let restList = [];
+    let latList = [];
+    let lngList = [];
     for (let i = 0; i<selection.length; i++){
-      ii++;
-      restLat = restLat + selection[i].lat;
-      restLng = restLng + selection[i].lng;
+      //check if repeat
       if (!restList.includes(selection[i].restaurant)){
+        restLat = restLat + selection[i].lat;
+        restLng = restLng + selection[i].lng;
         restList.push(selection[i].restaurant);
+        latList.push(selection[i].lat);
+        lngList.push(selection[i].lng);
       }
     };
-    map_06c7c6fd049b8c568e0b30a5a6e021b2.setView([restLat/ii,restLng/ii],5);
-    //console.log(country);
-    //console.log(restList);
-    buildCountryChart(restList);
-
-
-    
+    //zoom to average of lat and lng for markers
+    zoomTo(restLat/latList.length,restLng/lngList.length,5);
+    buildCountryChart(restList,latList,lngList);
 
     // Render the Bar Chart #3
     //Plotly.newPlot("bar3",b3Data,b3Layout);
@@ -97,12 +97,23 @@ function buildRegionChart(counList){
       hovermode: 'closest',
       xaxis:{
         title:{text:'Number of Awards'}
+      },
+      yaxis:{
+        automargin: true,
+        tickfont:{
+          size: 12
+        }
       }
     };
     // Render the Bar Chart #1 
     Plotly.newPlot("bar1",b1Data,b1Layout);
+    // bar1 chart event set up
     let bar1 = document.getElementById('bar1');
     bar1.on('plotly_click', function(data){
+      //changing dropdown option display
+      let optSel = document.getElementById("selDataset2");
+      optSel.value = data.points[0].y;
+      //changing chart display to the clicked country
       buildCharts(data.points[0].y);
     });
   });
@@ -128,8 +139,9 @@ function buildSubFilt(region){
     for (let i = 0; i<counList.length; i++){
       dataSelect.append("option").text(counList[i]);
     }
-    //init subfilt selection
+    //init subfilter selection
     buildRegionChart(counList);
+    //init restaurant chart by first country
     let sel = counList[0]
     buildCharts(sel);
   });
