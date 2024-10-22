@@ -174,7 +174,7 @@ function buildBumpChart(restList) {
   d3.json("https://raw.githubusercontent.com/ZhengshengWang/Project-3---World-s-Best-Restaurants/refs/heads/main/Resource/csvjson.json")
   .then((data) => {
       // create traces for each restaurant
-      let restaurants = Array.from(new Set(data.map(d => d.restaurant)));
+      let restaurants = restList;
       let traces = [];
       restaurants.forEach(restaurant => {
           let restaurantData = data.filter(d => d.restaurant === restaurant);
