@@ -37,8 +37,9 @@ function buildCountryChart(restList,lat,lng){
     let bar2 = document.getElementById('bar2');
     bar2.on('plotly_click',function(data){
       //zoom to [lat,lng] by the index value.
-      zoomTo(lat[restList.indexOf(data.points[0].x)],lng[restList.indexOf(data.points[0].x)],15)
-    });
+      zoomTo(lat[restList.indexOf(data.points[0].x)],lng[restList.indexOf(data.points[0].x)],15);
+      }
+    );
   })
 }
 // function to build charts
@@ -116,6 +117,7 @@ function buildRegionChart(counList){
       optSel.value = data.points[0].y;
       //changing chart display to the clicked country
       buildCharts(data.points[0].y);
+
     });
   });
 }
@@ -174,7 +176,7 @@ function buildBumpChart(restList) {
   d3.json("https://raw.githubusercontent.com/ZhengshengWang/Project-3---World-s-Best-Restaurants/refs/heads/main/Resource/csvjson.json")
   .then((data) => {
       // create traces for each restaurant
-      let restaurants = Array.from(new Set(data.map(d => d.restaurant)));
+      let restaurants = restList;
       let traces = [];
       restaurants.forEach(restaurant => {
           let restaurantData = data.filter(d => d.restaurant === restaurant);
