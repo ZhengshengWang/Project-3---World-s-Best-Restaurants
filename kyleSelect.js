@@ -32,6 +32,7 @@ function buildCountryChart(restList,lat,lng){
 
     // Render the Bar Chart #2
     Plotly.newPlot("bar2",b2Data,b2Layout);
+    buildBumpChart(restList);
     // bar2 chart even set up
     let bar2 = document.getElementById('bar2');
     bar2.on('plotly_click',function(data){
@@ -159,6 +160,7 @@ function init() {
     let firstSel = region[0];
     //build init sub filter
     buildSubFilt(firstSel);
+    //buildBumpChart();
 }
 
 // Function for event listener
@@ -168,6 +170,50 @@ function optionChanged(newRegion) {
 function optionChanged2(newCountry){
   buildCharts(newCountry);
 }
+function buildBumpChart(restList) {
+  d3.json("https://raw.githubusercontent.com/ZhengshengWang/Project-3---World-s-Best-Restaurants/refs/heads/main/Resource/csvjson.json")
+  .then((data) => {
+      // create traces for each restaurant
+      let restaurants = Array.from(new Set(data.map(d => d.restaurant)));
+      let traces = [];
+      restaurants.forEach(restaurant => {
+          let restaurantData = data.filter(d => d.restaurant === restaurant);
+          // x (years) and y (rankings) arrays
+          let x = restaurantData.map(d => d.year);
+          let y = restaurantData.map(d => d.rank);
+          traces.push({
+              x: x,
+              y: y,
+              type: 'scatter',
+              mode: 'lines+markers',
+              name: restaurant,
+              hovertemplate: `<b>${restaurant}</b><br>Year: %{x}<br>Rank: %{y}<extra></extra>`,
+              line: { width: 2 }
+          });
+      });
+      // Set up the layout
+      let layout = {
+          title: 'Ranking Changes Over Time',
+          xaxis: {
+              title: 'Year',
+              tickmode: 'linear'
+          },
+          yaxis: {
+              title: 'Ranking',
+              autorange: 'reversed', // Rank 1 at the top
+              tickvals: [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+          },
+          hovermode: 'closest'
+      };
+      // Step 3: Render the chart
+      Plotly.newPlot('bar3', traces, layout)
+})};
+
+
+
+
+
+
 
 // Initialize the dashboard
 init();
