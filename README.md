@@ -3,6 +3,7 @@
 Data from Kaggle World's Best Restaurants by Thomas Francois
 Link of the dataset: https://www.kaggle.com/datasets/thomasfranois/worlds-best-restaurants/data
 Source: https://www.theworlds50best.com/
+Copyright: https://www.mit.edu/~amini/LICENSE.md
 
 3 views:
     1. Map all location by lat, lon.
